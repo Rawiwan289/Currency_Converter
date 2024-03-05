@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _myRate = exchangeRateFromJson(response.body);
       answer = Text(
-        "${amount} ${input1} = ${_myRate?.result?.toString() ?? '...'} ${input2}",
+        "${amount} ${input1} = ${_myRate?.result?.toStringAsFixed(2)} ${input2}",
         style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
       );
     });
