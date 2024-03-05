@@ -191,28 +191,29 @@ class _DropdownState extends State<Dropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-        value: input,
-        icon: const Icon(Icons.arrow_downward),
-        elevation: 16,
-        style: const TextStyle(color: Colors.deepPurple),
-        underline: Container(
-          height: 2,
-          color: Colors.deepPurpleAccent,
-        ),
-        onChanged: (String? value) {
-          setState(() {
-            // It's better to directly use widget.input in setState.
-            widget.input = value!;
-            print(widget.input);
-          });
-        },
-        items: list.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
+    return Container(
+      width: 300,
+      decoration: BoxDecoration(color: Colors.white),
+      child: DropdownButton<String>(
+        isExpanded: true,
+          value: input,
+          icon: const Icon(Icons.arrow_downward),
+          elevation: 16,
+          style: const TextStyle(color: Colors.black),
+          onChanged: (String? value) {
+            setState(() {
+              // It's better to directly use widget.input in setState.
+              widget.input = value!;
+              print(widget.input);
+            });
+          },
+          items: list.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Center(child: Text(value)),
+            );
+          }).toList(),
+      ),
     );
   }
 }

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "My App",
       home: const MyHomePage(),
-      theme: ThemeData(primarySwatch: Colors.brown),
+      theme: ThemeData(primarySwatch: Colors.brown,scaffoldBackgroundColor: Color.fromARGB(255, 155, 255, 140)),
     );
   }
 }
@@ -68,23 +68,26 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10),
-            TextFormField(
-              decoration: const InputDecoration(label: Text("Amount")),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                try {
-                  if (value!.isNotEmpty) {
-                    if (double.parse(value) >= 0) {
-                      return null;
+            SizedBox(height: 30),
+            SizedBox(
+              width: 300,
+              child: TextFormField(
+                decoration: const InputDecoration(label: Text("Amount"),fillColor: Colors.white,filled: true),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  try {
+                    if (value!.isNotEmpty) {
+                      if (double.parse(value) >= 0) {
+                        return null;
+                      }
                     }
+                    throw ();
+                  } catch (e) {
+                    return "Fill Amount";
                   }
-                  throw ();
-                } catch (e) {
-                  return "Fill Amount";
-                }
-              },
-              controller: amountController,
+                },
+                controller: amountController,
+              ),
             ),
             SizedBox(height: 30),
             Text("From",
