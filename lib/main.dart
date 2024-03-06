@@ -30,6 +30,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   ExchangeRate? _myRate;
   Text answer = Text('');
+  final amountController = TextEditingController();
+  String input1 = 'USD';
+  String input2 = 'THB';
+  Dropdown dropdown1 = new Dropdown(input: 'USD');
+  Dropdown dropdown2 = new Dropdown(input: 'THB');
+
   void getExchangeRate({String? input1, String? input2, String? amount}) async {
     // print("getting exchange rate");
     var params = {'from': input1, 'to': input2, 'amount': amount};
@@ -48,14 +54,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void resetFields() {
+    amountController.clear();
+    setState(() {
+      dropdown1 = Dropdown(input: 'USD');
+      dropdown2 = Dropdown(input: 'THB');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print("เริ่มการทำงาน build");
-    String input1 = 'USD';
-    String input2 = 'THB';
-    Dropdown dropdown1 = new Dropdown(input: input1);
-    Dropdown dropdown2 = new Dropdown(input: input2);
-    final amountController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -106,23 +115,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          getExchangeRate(
-            input1: dropdown1.getInput().toString(),
-            input2: dropdown2.getInput().toString(),
-            amount: amountController.text.toString(),
-          );
-        },
-        tooltip: "Press to exhange",
-        child: const Icon(
-          Icons.circle_rounded,
-          color: Colors.green,
-          size: 50,
-        ),
+      bottomNavigationBar: ButtonBar(
+        alignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              getExchangeRate(
+                input1: dropdown1.getInput().toString(),
+                input2: dropdown2.getInput().toString(),
+                amount: amountController.text.toString(),
+              );
+            },
+            child: Text('Continue'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              resetFields();
+            },
+            child: Text('Cancel'),
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
