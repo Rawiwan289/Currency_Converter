@@ -8,7 +8,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -29,15 +29,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   ExchangeRate? _myRate;
-  Text answer = Text('');
+  String? _resultText;
   final amountController = TextEditingController();
   String input1 = 'USD';
   String input2 = 'THB';
-  Dropdown dropdown1 = new Dropdown(input: 'USD');
-  Dropdown dropdown2 = new Dropdown(input: 'THB');
+  Dropdown dropdown1 = Dropdown(input: 'USD');
+  Dropdown dropdown2 = Dropdown(input: 'THB');
 
   void getExchangeRate({String? input1, String? input2, String? amount}) async {
-    // print("getting exchange rate");
+    if (amount == null || amount.isEmpty) {
+      return; // No need to proceed if amount is empty
+    }
+    
     var params = {'from': input1, 'to': input2, 'amount': amount};
     var uri =
         Uri.https('currency-converter-pro1.p.rapidapi.com', '/convert', params);
@@ -47,10 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     setState(() {
       _myRate = exchangeRateFromJson(response.body);
-      answer = Text(
-        "${amount} ${input1} = ${_myRate?.result?.toStringAsFixed(2)} ${input2}",
-        style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-      );
+      _resultText = "${amount} ${input1} = ${_myRate?.result?.toStringAsFixed(2)} ${input2}";
     });
   }
 
@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       dropdown1 = Dropdown(input: 'USD');
       dropdown2 = Dropdown(input: 'THB');
+      _resultText = null; // Clear the result text
     });
   }
 
@@ -83,18 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextFormField(
                 decoration: const InputDecoration(label: Text("Amount"),fillColor: Colors.white,filled: true),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  try {
-                    if (value!.isNotEmpty) {
-                      if (double.parse(value) >= 0) {
-                        return null;
-                      }
-                    }
-                    throw ();
-                  } catch (e) {
-                    return "Fill Amount";
-                  }
-                },
                 controller: amountController,
               ),
             ),
@@ -111,7 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 30),
             dropdown2,
             SizedBox(height: 30),
-            answer
+            if (_resultText != null) // Only show result if not null
+              Text(
+                _resultText!,
+                style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
+              ),
           ],
         ),
       ),
@@ -123,15 +116,21 @@ class _MyHomePageState extends State<MyHomePage> {
               getExchangeRate(
                 input1: dropdown1.getInput().toString(),
                 input2: dropdown2.getInput().toString(),
-                amount: amountController.text.toString(),
+                amount: amountController.text,
               );
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green, // background color
+            ),
             child: Text('Continue'),
           ),
           ElevatedButton(
             onPressed: () {
               resetFields();
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red, // background color
+            ),
             child: Text('Cancel'),
           ),
         ],
