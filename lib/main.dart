@@ -122,7 +122,12 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green, // background color
             ),
-            child: Text('Continue'),
+            child: Text(
+              'Continue',
+                style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -131,7 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red, // background color
             ),
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: const TextStyle(
+                color: Colors.white,
+              )
+            ),
           ),
         ],
       ),
