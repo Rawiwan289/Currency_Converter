@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "My App",
       home: const MyHomePage(),
-      theme: ThemeData(primarySwatch: Colors.brown,scaffoldBackgroundColor: Color.fromARGB(255, 155, 255, 140)),
+      theme: ThemeData(
+          primarySwatch: Colors.brown,
+          scaffoldBackgroundColor: Color.fromARGB(255, 155, 255, 140)),
     );
   }
 }
@@ -40,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (amount == null || amount.isEmpty) {
       return; // No need to proceed if amount is empty
     }
-    
+
     var params = {'from': input1, 'to': input2, 'amount': amount};
     var uri =
         Uri.https('currency-converter-pro1.p.rapidapi.com', '/convert', params);
@@ -50,7 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     setState(() {
       _myRate = exchangeRateFromJson(response.body);
-      _resultText = "${amount} ${input1} = ${_myRate?.result?.toStringAsFixed(2)} ${input2}";
+      _resultText =
+          "${amount} ${input1} = ${_myRate?.result?.toStringAsFixed(2)} ${input2}";
     });
   }
 
@@ -82,7 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               width: 300,
               child: TextFormField(
-                decoration: const InputDecoration(label: Text("Amount"),fillColor: Colors.white,filled: true),
+                decoration: const InputDecoration(
+                    label: Text("Amount"),
+                    fillColor: Colors.white,
+                    filled: true),
                 keyboardType: TextInputType.number,
                 controller: amountController,
               ),
@@ -124,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Text(
               'Continue',
-                style: const TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -136,12 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red, // background color
             ),
-            child: Text(
-              'Cancel',
-              style: const TextStyle(
-                color: Colors.white,
-              )
-            ),
+            child: Text('Cancel',
+                style: const TextStyle(
+                  color: Colors.white,
+                )),
           ),
         ],
       ),
